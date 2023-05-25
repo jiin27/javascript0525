@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타자게임</title>
+    <style>
+        #wrapper{
+            width: 750px;
+            height: 550px;
+            background: whitesmoke;
+            margin: auto;
+        }
+        #side{
+            width: 150px;
+            height: 100%;
+            background: whitesmoke;
+            float: left;
+            text-align: center;
+            position: relative;
+            box-sizing: border-box;
+        }
+        #score{
+            font-size: 50px;
+        }
+        #side input{
+            width: 120px;
+            height: 40px;
+            position: absolute;
+            left: 10px;
+            top: 350px;
+        }
+        #side button{
+            width: 120px;
+            height: 30px;
+            margin-top: 10px;
+            position: absolute;
+            left: 15px;
+            top: 400px;
+        }
+        #content{
+            width: 600px;
+            height: 100%;
+            background: rgb(228, 255, 255);
+            float: left;
+        }
+    </style>
+    <script>
+        let content;
+        let side, score, keyword, div;
+
+        function init(){
+            content=document.getElementById("content");
+            side=document.getElementById("side");
+            score=document.getElementById("score");
+            keyword=document.getElementById("keyword");
+
+            for(let a=1; a<5; a++){
+                for(let i=1; i<4; i++){
+                    div=document.createElement("div");
+                    div.style.width=30+"px";
+                    div.style.height=30+"px";
+                    div.style.background="cornflowerblue";
+                    div.style.position="absolute";
+                    div.style.left=(20*i)+30+"px";
+                    div.style.top=100+"px";
+                    div.style.border=1+"px solid silver";
+
+                    side.appendChild(div);
+                }
+        }
+        }
+
+        addEventListener("load", function(){
+            init();
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="side">
+            <h1 id="score">00점</h1>
+            <input type="text" id="keyword">
+            <button>Start</button>
+        </div>
+        <div id="content"></div>
+    </div>
+</body>
+</html>

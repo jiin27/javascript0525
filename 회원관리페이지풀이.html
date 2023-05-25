@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원관리페이지풀이</title>
+    <style>
+        #wrapper{
+            width: 750px;
+            height: 600px;
+            background: whitesmoke;
+            margin: auto;
+        }
+        #header{
+            width: 100%;
+            height: 50px;
+            background: lavender;
+        }
+        #side{
+            width: 150px;
+            height: 550px;
+            background: lemonchiffon;
+            float: left;
+            text-align: center;
+            padding-top: 30px;
+            box-sizing: border-box;
+        }
+        #side input{
+            width: 80%;
+            margin-top: 10px;
+        }
+        #side button{
+            margin-top: 10px;
+        }
+        #side select{
+            width: 80%;
+            margin-top: 10px;
+        }
+        #content{
+            width: 600px;
+            height: 550px;
+            background: whitesmoke;
+            float: left;
+            text-align: center;
+            padding-top: 10px;
+            box-sizing: border-box;
+            overflow: scroll;
+        }
+        #content input{
+            width: 500px;
+            margin: 10px;
+        }
+        #pic{
+            width: 130px;
+            height: 144px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        let content; //table 출력될 영역
+        let id, pass, name, sel; //UI 컨트롤 들
+        let pic; //미리보기에 사용할 이미지 객체
+        let tag; //등록 함수, 목록 함수 등이 함께 공유할 수 있게 전역 변수로 선언 
+                        //문자열의 경우엔 초기화 해놓지 않으면 undefinded 문자열이 함께 누적됨!
+        let memberList=[]; //회원이 누적돼야 하므로. 전역 변수로 선언
+
+        function preview(obj){
+            pic.src=obj.value;
+        }
+        
+        function getList(){
+            tag=""; //함수호출시마다 기존의 tag를 비우고
+            tag+="<table width=\"100%\" border=\"1px\">";
+            tag+="<tr>";
+            tag+="<td width=\"5%\">No</td>";
+            tag+="<td width=\"20%\">Photo</td>";
+            tag+="<td width=\"25%\">ID</td>";
+            tag+="<td width=\"25%\">Password</td>";
+            tag+="<td width=\"25%\">Name</td>";
+            tag+="</tr>";
+
+            for(let i=memberList.length-1; i>=0; i--){
+                tag+="<tr>";
+                tag+="<td>"+(i+1)+"</td>";
+                tag+="<td><img src=\""+memberList[i][0]+"\" width=\"40px\"></td>";
+                tag+="<td>"+memberList[i][1]+"</td>";
+                tag+="<td>"+memberList[i][2]+"</td>";
+                tag+="<td>"+memberList[i][3]+"</td>";
+                tag+="</tr>";
+            }
+            tag+="<tr>";
+            tag+="<td colspan='5' align='right'>총"+memberList.length+"명</td>";
+            tag+="</tr>";
+            tag+="</table>";
+            console.log(tag);
+            content.innerHTML=tag;
+        }
+
+        //한 사람에 대한 정보를 1차원 배열에 담은 후, 해당 배열을 전체 회원 명단인 2차원 배열에 담자
+        function regist(){
+            //side에서 입력한 데이터를 1차원 배열에 담기
+            let member=new Array(4);
+            member[0]=sel.value; //이미지 명은 셀렉트 박스의 값 (이미지 소스가 담긴)이므로.
+            member[1]=id.value;
+            member[2]=pass.value;
+            member[3]=name.value;
+
+            //완성된 한 사람에 대한 정보를 2차원 배열에 추가하기
+            memberList.push(member); //공간 1개를 추가하면서 1차원 배열 대입
+
+            //목록 조회
+            getList();
+        }
+
+        function init(){
+            content=document.getElementById("content");
+            id=form1.id;
+            pass=form1.pass;
+            name=form1.name;
+            sel=form1.sel;
+            pic=document.getElementById("pic");
+        }
+
+        addEventListener("load", function(){
+            init();
+            getList(); //회원의 목록 가져오기 
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header"></div>
+        <div id="side">
+            <!-- 
+                form 이란, 입력양식의 범위를 설정하는태그 
+                1) 폼태그의 범위에 있는 모든 UI관련 컴포넌트는 서버로 전송할 수있다.
+                2) 폼태그를 이용하면 요소들 간의 접근 방법으로써 부모, 자식 포함관계로 접근이 가능하다.
+                    ex. window.document.form1.id 윈도우(브라우저) 내 문서의 form1(폼태그 name)의 자식요소 name""
+            -->
+            <form name="form1">
+                <input type="text" name="id" placeholder="id">
+                <input type="password" name="pass" placeholder="password" maxlength="12">
+                <input type="text" name="name" placeholder="이름">
+                <select name="sel" onChange="preview(this)">
+                    <option value="">프로필 사진을 선택하세요.</option>
+                    <option value="../images/mario.png">마리오</option>
+                    <option value="../images/jjang.png">짱구</option>
+                    <option value="../images/shrek.jpg">shrek</option>
+                    <option value="../images/raya.png">raya</option>
+                </select>
+                <img id="pic">
+            </form>
+            <button onClick="regist()">join</button>
+        </div>
+        <div id="content"></div>
+    </div>
+</body>
+</html>
